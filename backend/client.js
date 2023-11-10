@@ -45,6 +45,40 @@ class FHIRClient {
             console.log(err)
         })
     }
+
+    createPatient(firstName, lastName, dateOfBirth, phoneNumber) {
+         const data = {
+                    "active": true,
+                    "name": [
+                        {
+                            "use": "usual",
+                            "text": `${firstName} ${lastName}`,
+                            "family": lastName,
+                            "given": [
+                                firstName
+                            ]
+                        }
+                    ],
+                    "telecom": [
+                        {
+                            "system": "phone",
+                            "value": phoneNumber,
+                            "use": "home"
+                        }
+                    ],
+
+                    "birthDate": dateOfBirth
+        }
+
+        this.axios.post('/Patient', data)
+        .then(response => console.log(response.data))
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
 }
+
+
 
 module.exports = FHIRClient
