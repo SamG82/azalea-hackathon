@@ -68,21 +68,23 @@ router.post('/practitioner/register', async (req, res) => {
 router.post('/practitioner/login', async (req, res) => {
     const practitioner = await Practitioner.findOne({email: req.body.email})
     if (practitioner == null) {
-        return res.json({'error': 'invalid username or password'})
+        return res.status(401).json({'error': 'Invalid username or password'})
     }
 
-    console.log(practitioner._id.toString())
     bcrypt.compare(req.body.password, practitioner.password)
         .then(status => {
             const jwt = createJWT(practitioner._id, 'practitioner')
-            res.cookie('token', JSON.stringify(jwt), {
-                httpOnly: true
-            })
-
-            res.sendStatus(200)
-        })
-        .catch(err => {
-            res.sendStatus(401)
+            
+            if (status) {
+                res.cookie('token', JSON.stringify(jwt), {
+                    httpOnly: true
+                })
+    
+                return res.sendStatus(200)
+            } else {
+                return res.status(401).json({'error': 'Invalid username or password'})
+            }
+            
         })
 })
 
