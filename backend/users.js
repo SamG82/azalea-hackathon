@@ -31,7 +31,7 @@ router.post('/practitioner/register', async (req, res) => {
             })
         
             newPractitioner.save().then(() => {
-                fhir.createPractioner(req.body.firstName, req.body.lastName)
+                fhir.createPractioner(req.body.firstName, req.body.lastName, req.body.npi)
                 res.sendStatus(200)
             })
         })
@@ -51,7 +51,7 @@ router.post('/practitioner/login', async (req, res) => {
             res.cookie('token', JSON.stringify(jwt), {
                 httpOnly: true
             })
-            
+
             res.sendStatus(200)
         })
         .catch(err => {

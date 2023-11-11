@@ -1,8 +1,6 @@
 const axios = require('axios')
 require('dotenv').config()
 
-const fakeNPI = 1172881645
-
 class FHIRClient {
     constructor() {
         this.axios = axios.create({
@@ -11,7 +9,7 @@ class FHIRClient {
         })
     }
 
-    createPractioner(firstName, lastName) {
+    createPractioner(firstName, lastName, npi) {
         const data = {
             "name": [
                 {
@@ -34,13 +32,13 @@ class FHIRClient {
                         ]
                     },
                     "system": "http://hl7.org/fhir/sid/us-npi",
-                    "value": fakeNPI
+                    "value": npi
                 }
             ]
         }
 
         this.axios.post('/Practitioner', data)
-        .then(response => console.log(response.data))
+        .then(response => console.log(response.status))
         .catch(err => {
             console.log(err)
         })
