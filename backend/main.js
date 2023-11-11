@@ -1,9 +1,17 @@
-const FHIRClient = require('./client')
-require('dotenv').config()
+const usersRouter = require('./users')
+const mongoose = require('mongoose')
+const express = require('express')
 
-const root_url = process.env.ROOT_URL
-const token = process.env.TOKEN
+async function main() {
+    await mongoose.connect(`mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_PW}@cluster0.sccfncw.mongodb.net/?retryWrites=true&w=majority`)
 
-const fhir = new FHIRClient(root_url, token)
+    const app = express()
+    app.use(express.json())
+    app.use('/users', usersRouter)
 
-fhir.createPractioner("Test Javascript", "Javascript test")
+    app.listen(3000, () => {
+        console.log('Server started on port 3000')
+    })
+}
+
+main()
