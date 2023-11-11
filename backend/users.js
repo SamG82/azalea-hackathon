@@ -15,7 +15,7 @@ const createJWT = (id, role) => {
         role
     }, process.env.JWT_SECRET)
 }
-router.get('/practitioner', async (req, res) => {
+router.get('/practitioner', async(req, res) => {
     let payload = {}
     try {
         payload = jwt.verify(req.cookies.token, process.env.JWT_SECRET)
@@ -29,7 +29,30 @@ router.get('/practitioner', async (req, res) => {
     res.json({name: practitioner.firstName})
 })
 
-router.post('/patient/register', async (req, res) => {
+router.post('/patient/login', async(req, res) => {
+    const patient = await Patient.findOne({email: req.body.email})
+    if (patient == null) {
+        return res.status(401).json({'error': 'Invalid username or password'})
+    }
+
+    bcrypt.compare(req.body.password, patient.password)
+        .then(status => {
+            const new_token = createJWT(patient._id, 'practitioner')
+            
+            if (status) {
+                res.cookie('token', new_token, {
+                    httpOnly: true
+                })
+    
+                return res.sendStatus(200)
+            } else {
+                return res.status(401).json({'error': 'Invalid username or password'})
+            }
+            
+        })
+})
+
+router.post('/patient/register', async(req, res) => {
     const potentialPatient = await Patient.findOne({email: req.body.email})
     if (potentialPatient != null) {
         return res.status(401).json({'error': 'Email already in use'})
@@ -41,13 +64,12 @@ router.post('/patient/register', async (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 password: hash,
-                email: req.body.email,
-                familyContact: req.body.familyContact
+                email: req.body.email
             })
         
             newPatient.save().then(() => {
                 console.log('created')
-                fhir.createPatient(req.body.firstName, req.body.lastName, req.body.email, req.body.familyContact)
+                fhir.createPatient(req.body.firstName, req.body.lastName, req.body.email)
                 res.sendStatus(200)
             })
         })

@@ -9,6 +9,16 @@ class FHIRClient {
         })
     }
 
+    async getAllPatients() {
+        const response = await this.axios.get('/Patient')
+        return response.data.entry.map((patient, _) => {
+            return {
+                id: patient.resource.id,
+                displayName: patient.resource.name[0].text
+            }
+        })
+    }
+
     createPractioner(firstName, lastName, npi) {
         const data = {
             "name": [
