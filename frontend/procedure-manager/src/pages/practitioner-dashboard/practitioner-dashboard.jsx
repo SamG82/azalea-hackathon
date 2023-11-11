@@ -8,11 +8,13 @@ function CreateProcedureForm() {
     return (
         <>
         <div className='patient-selection'>
-            
+            <div className='patient-box'>
+                <h1>Test Patient</h1>
+            </div>
         </div>
         <div className='account-form-container'>
             <form className='account-form'>
-                <input type='text' ref={cptCode} placeholder='cptcode'/>
+                <input type='text' ref={cptCode} placeholder='CPT Code'/>
                 <button className='submit-button'>Submit</button>
             </form>
         </div>
