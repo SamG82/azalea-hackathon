@@ -22,6 +22,9 @@ async function main() {
         credentials: true,
         origin: ['http://localhost:5173']
     }
+
+    fhir.createProcedure("Test operation", "John", "Doe", 2222)
+    
     app.use(cors(corsOptions))
     app.use(cookieParser())
     app.use(express.json())

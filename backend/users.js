@@ -15,10 +15,18 @@ const createJWT = (id, role) => {
         role
     }, process.env.JWT_SECRET)
 }
-router.get('/practitioner', (req, res) => {
-    const token = req.cookies.token.replace('"', '')
-    const payload = jwt.verify(token, process.env.JWT_SECRET)
-    console.log(payload)
+router.get('/practitioner', async (req, res) => {
+    let payload = {}
+    try {
+        payload = jwt.verify(req.cookies.token, process.env.JWT_SECRET)
+    } catch(err) {
+        console.log(err)
+        return res.sendStatus(401)
+    }
+
+    const practitioner = await Practitioner.findById(payload.id)
+    
+    res.json({name: practitioner.firstName})
 })
 
 router.post('/patient/register', async (req, res) => {
@@ -78,10 +86,10 @@ router.post('/practitioner/login', async (req, res) => {
 
     bcrypt.compare(req.body.password, practitioner.password)
         .then(status => {
-            const jwt = createJWT(practitioner._id, 'practitioner')
+            const new_token = createJWT(practitioner._id, 'practitioner')
             
             if (status) {
-                res.cookie('token', JSON.stringify(jwt).replace('"', ''), {
+                res.cookie('token', new_token, {
                     httpOnly: true
                 })
     

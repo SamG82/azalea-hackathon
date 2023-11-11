@@ -82,21 +82,13 @@ class FHIRClient {
         const minutes = currentTime.getMinutes();
         const seconds = currentTime.getSeconds();
     
-        const formattedTime = `${formatTwoDigits(hours)}:${formatTwoDigits(minutes)}:${formatTwoDigits(seconds)}`;
+        const formattedTime = `${hours}:${minutes}:${seconds}`;
         return formattedTime;
     }
 
     createProcedure(text, firstName, lastName, patientID){
         const data = {
-                "resourceType": "Procedure",
-                "meta": {
-                    "lastUpdated": this.getCurrentTime(),
-                    "profile": [
-                        "https://app.azaleahealth.com/fhir/R4/142443/StructureDefinition/Procedure",
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
-                    ]
-                },
-                "status": "unknown",
+                "status": "preparation",
                 "code": {
                     "coding": [
                         {

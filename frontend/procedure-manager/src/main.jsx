@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import PractitionerLogin from './pages/practitioner-login/practitioner-login.jsx'
 import PractitionerRegister from './pages/practitioner-register/practitioner-register.jsx'
+import PractitionerDashboard from './pages/practitioner-dashboard/practitioner-dashboard.jsx'
+
 import './index.css'
 import {
   createBrowserRouter,
@@ -21,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/practitioner-register',
     element: <PractitionerRegister/>
+  },
+  {
+    path: '/practitioner-dashboard',
+    element: <PractitionerDashboard/>
   }
 ])
 
