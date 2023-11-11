@@ -2,9 +2,10 @@ const express = require('express')
 const Practitioner = require('./schemas/practitioner')
 const FHIRClient = require('./client')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const fhir = new FHIRClient()
-
 const router = express.Router()
 
 router.post('/practitioner/register', async (req, res) => {
@@ -28,6 +29,22 @@ router.post('/practitioner/register', async (req, res) => {
             })
         })
     })
+})
+
+router.post('/practitioner/login', async (req, res) => {
+    const practitioner = await Practitioner.findOne({email: req.body.email})
+    if (practitioner == null) {
+        return res.json({'error': 'invalid username or password'})
+    }
+
+
+    bcrypt.compare(req.body.password, practitioner.password)
+        .then(status => {
+            res.sendStatus(200)
+        })
+        .catch(err => {
+            res.sendStatus(401)
+        })
 })
 
 module.exports = router

@@ -1,13 +1,13 @@
 const axios = require('axios')
-
+require('dotenv').config()
 
 const fakeNPI = 1172881645
 
 class FHIRClient {
-    constructor(base_url, token) {
+    constructor() {
         this.axios = axios.create({
-            baseURL: base_url,
-            headers: {'Authorization': `Bearer ${token}`}
+            baseURL: process.env.ROOT_URL,
+            headers: {'Authorization': `Bearer ${process.env.TOKEN}`}
         })
     }
 
