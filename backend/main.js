@@ -25,7 +25,9 @@ async function main() {
     
     const result = await fhir.getAllPatients()
     console.log(result)
-
+    const newResult = await fhir.addFamilyNumber("392649", "2636236223")
+    console.log(newResult)
+    
     app.get('/patients', async (req, res) => {
         const patients = await fhir.getAllPatients();
         res.json(patients);

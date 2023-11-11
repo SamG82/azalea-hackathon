@@ -19,6 +19,18 @@ class FHIRClient {
         })
     }
 
+    async addFamilyNumber(patientId, familyPhoneNumber) {
+        const response = await this.axios.get(`/Patient/${patientId}`);
+        const patientData = response.data;
+    
+        const selectedPatient = {
+            id: patientData.id,
+            displayName: patientData.name[0].text,
+            phoneNumber: familyPhoneNumber 
+        };
+        console.log(selectedPatient)
+        return selectedPatient;
+    }
     createPractioner(firstName, lastName, npi) {
         const data = {
             "name": [
