@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import client from '../../client'
+
 import './practitioner-dashboard.css'
 
 function CreateProcedureForm() {
@@ -16,7 +17,8 @@ function CreateProcedureForm() {
             id: selected,
             code: cptCode.current.value
         }).then(response => {
-            console.log(response.status)
+            cptCode.current.value =''
+            setSelected(0)
         })
     }
 
@@ -27,9 +29,9 @@ function CreateProcedureForm() {
     }, [])
 
     return (
-        <>
-        <h2 className='select-a-patient'>Select a patient</h2>
-        <div className='patient-selection'>
+        <div className='procedure-form'>
+            <h2 className='select-a-patient'>Select a patient</h2>
+            <div className='patient-selection'>
             {patients.map((patient, idx) => (
                 <button
                     className={selected === patient.id ? 'patient-selected' : 'patient'}
@@ -37,14 +39,14 @@ function CreateProcedureForm() {
                     onClick={e => setSelected(patient.id)}
                     >{patient.displayName}</button>
             ))}
-        </div>
-        <div className='account-form-container'>
+            </div>
+            <div className='account-form-container'>
             <form className='account-form'>
                 <input type='text' ref={cptCode} placeholder='CPT Code'/>
                 <button onClick={e => createProcedure(e)} className='submit-button'>Submit</button>
             </form>
         </div>
-        </>
+        </div>
     )
 }
 

@@ -68,6 +68,22 @@ async function main() {
         fhir.createProcedure(req.body.code, req.body.displayName, req.body.id)
         res.sendStatus(200)
     })
+
+    app.get('/procedure', async(req, res) => {
+        let payload = {}
+        try {
+            payload = jwt.verify(req.cookies.token, process.env.JWT_SECRET)
+        } catch(err) {
+            console.log(err)
+            return res.sendStatus(401)
+        }
+
+        if (payload.role != 'patient') {
+            return res.sendStatus(401)
+        }
+
+        fhir.getProcedures()
+    })
     
 
     app.listen(3000, () => {

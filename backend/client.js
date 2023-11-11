@@ -130,6 +130,10 @@ class FHIRClient {
         })
     }
 
+    async getProcedures(firstName, lastName) {
+        
+    }
+
 }
 
 

@@ -24,6 +24,10 @@ router.get('/practitioner', async(req, res) => {
         return res.sendStatus(401)
     }
 
+    if (payload.role != 'practitioner') {
+        return res.sendStatus(401)
+    }
+
     const practitioner = await Practitioner.findById(payload.id)
     
     res.json({name: practitioner.firstName})
