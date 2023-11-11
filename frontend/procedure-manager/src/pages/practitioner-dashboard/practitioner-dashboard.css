@@ -29,3 +29,9 @@
     border-radius: 15px;
     font-size: 2rem;
 }
+
+.create-procedure:hover {
+    background-color: rgb(72, 183, 235);
+}
+
+
