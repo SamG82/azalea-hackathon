@@ -4,9 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
-
 require('dotenv').config()
-
 const FHIRClient = require('./client')
 require('dotenv').config()
 
@@ -19,7 +17,6 @@ async function main() {
     await mongoose.connect(`mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_PW}@cluster0.sccfncw.mongodb.net/?retryWrites=true&w=majority`)
     
     const app = express()
-
     const corsOptions = {
         credentials: true,
         origin: ['http://localhost:5173']
@@ -27,8 +24,11 @@ async function main() {
     
     const result = await fhir.getAllPatients()
     console.log(result)
-    const newResult = await fhir.addFamilyNumber("392649", "2636236223")
-    console.log(newResult)
+    
+    const name = 'Doe'
+    const firstName = 'John'
+    const addPhoneNumberToPatient = require('./family')
+    addPhoneNumberToPatient(firstName, name, "1234567890");   
     
     app.use(cookieParser())
     app.use(cors(corsOptions))
