@@ -1,6 +1,7 @@
 const usersRouter = require('./users')
 const mongoose = require('mongoose')
 const express = require('express')
+const cors = require('cors')
 require('dotenv').config()
 
 const FHIRClient = require('./client')
@@ -15,6 +16,12 @@ async function main() {
     await mongoose.connect(`mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_PW}@cluster0.sccfncw.mongodb.net/?retryWrites=true&w=majority`)
     
     const app = express()
+
+    const corsOptions = {
+        credentials: true,
+        origin: ['http://localhost:5173']
+    }
+    app.use(cors(corsOptions))
     app.use(express.json())
     app.use('/users', usersRouter)
 

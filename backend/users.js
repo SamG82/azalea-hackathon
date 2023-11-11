@@ -18,7 +18,7 @@ const createJWT = (id, role) => {
 router.post('/practitioner/register', async (req, res) => {
     const potentialPractitioner = await Practitioner.findOne({email: req.body.email})
     if (potentialPractitioner != null) {
-        return res.json({'error': 'Email already in use'})
+        return res.status(401).json({'error': 'Email already in use'})
     }
 
     bcrypt.genSalt(10, (err, salt) => {
@@ -31,6 +31,7 @@ router.post('/practitioner/register', async (req, res) => {
             })
         
             newPractitioner.save().then(() => {
+                console.log('created')
                 fhir.createPractioner(req.body.firstName, req.body.lastName, req.body.npi)
                 res.sendStatus(200)
             })

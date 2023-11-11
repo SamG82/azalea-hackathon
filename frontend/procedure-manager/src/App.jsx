@@ -6,7 +6,7 @@ function App() {
   return (
     <div className='app'>
       <h1>Procedure Connect</h1>
-      <h2>Keep your family members up do to date with your medical procedures.</h2>
+      <h2>Keep your family members updated with your medical procedures.</h2>
       <div className='patient-buttons'>
         <Link to={'/patient-login'}>Login</Link>
         <Link to={'/patient-register'}>Register</Link>
