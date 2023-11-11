@@ -24,12 +24,7 @@ async function main() {
     
     const result = await fhir.getAllPatients()
     console.log(result)
-    
-    const name = 'Doe'
-    const firstName = 'John'
-    const addPhoneNumberToPatient = require('./family')
-    addPhoneNumberToPatient(firstName, name, "1234567890");   
-    
+        
     app.use(cookieParser())
     app.use(cors(corsOptions))
     app.use(express.json())
