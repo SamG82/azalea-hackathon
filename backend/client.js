@@ -96,32 +96,37 @@ class FHIRClient {
         return formattedTime;
     }
 
-    createProcedure(text, firstName, lastName, patientID){
+    createProcedure(code, displayName, patientID){
+        console.log(`${code} ${displayName} ${patientID}`)
         const data = {
-                "status": "preparation",
+                "resourceType": "Procedure",
+                "status": "unknown",
                 "code": {
                     "coding": [
                         {
                             "system": "http://www.ama-assn.org/go/cpt",
-                            "code": "66982",
-                            "display": text
+                            "code": code,
                         }
                     ],
-                    "text": text
                 },
                 "subject": {
                     "reference": `Patient/${patientID}`,
                     "type": "Patient",
-                    "display": `${firstName} ${lastName}`
+                    "display": displayName
                 },
                 "performedPeriod": {
-                    "start": this.getCurrentTime()
+                    "extension": [
+                        {
+                            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                            "valueCode": "unknown"
+                        }
+                    ]
                 }
         }   
             this.axios.post('/Procedure', data)
-            .then(response => console.log(response.data))
+            .then(response => console.log(response.headers['Location']))
             .catch(err => {
-            console.log(err)
+            console.log(err.response.data.issue)
         })
     }
 

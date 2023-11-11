@@ -28,10 +28,45 @@
     color: white;
     border-radius: 15px;
     font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 .create-procedure:hover {
     background-color: rgb(72, 183, 235);
 }
 
+.select-a-patient {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
 
+.patient-selection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    font-size: 0.7rem;
+    width: 40%;
+    margin: auto;
+}
+
+.patient {
+    border: none;
+    padding: 1rem;
+    border-radius: 15px;
+    font-size: 1.3rem;
+}
+.patient:hover {
+    background-color: rgb(209, 209, 209);
+    cursor: pointer;
+}
+.patient-selected {
+    border: none;
+    padding: 1rem;
+    border-radius: 15px;
+    background-color: rgb(72, 183, 235);
+    color: white;
+    font-size: 1.3rem;
+}
+.account-form-container {
+    margin-top: 0;
+}

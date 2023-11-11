@@ -4,18 +4,44 @@ import client from '../../client'
 import './practitioner-dashboard.css'
 
 function CreateProcedureForm() {
+    const [patients, setPatients] = useState([])
+    const [selected, setSelected] = useState(0)
     const cptCode = useRef('')
+
+    const createProcedure = (e) => {
+        e.preventDefault()
+        console.log(selected)
+        console.log(cptCode.current.value)
+        client.post('/procedure', {
+            id: selected,
+            code: cptCode.current.value
+        }).then(response => {
+            console.log(response.status)
+        })
+    }
+
+    useEffect(() => {
+        client.get('/patients').then(response => {
+            setPatients(response.data)
+        })
+    }, [])
+
     return (
         <>
+        <h2 className='select-a-patient'>Select a patient</h2>
         <div className='patient-selection'>
-            <div className='patient-box'>
-                <h1>Test Patient</h1>
-            </div>
+            {patients.map((patient, idx) => (
+                <button
+                    className={selected === patient.id ? 'patient-selected' : 'patient'}
+                    key={idx}
+                    onClick={e => setSelected(patient.id)}
+                    >{patient.displayName}</button>
+            ))}
         </div>
         <div className='account-form-container'>
             <form className='account-form'>
                 <input type='text' ref={cptCode} placeholder='CPT Code'/>
-                <button className='submit-button'>Submit</button>
+                <button onClick={e => createProcedure(e)} className='submit-button'>Submit</button>
             </form>
         </div>
         </>
