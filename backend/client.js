@@ -75,6 +75,54 @@ class FHIRClient {
         })
     }
 
+
+    getCurrentTime() {
+        const currentTime = new Date();
+        const hours = currentTime.getHours();
+        const minutes = currentTime.getMinutes();
+        const seconds = currentTime.getSeconds();
+    
+        const formattedTime = `${formatTwoDigits(hours)}:${formatTwoDigits(minutes)}:${formatTwoDigits(seconds)}`;
+        return formattedTime;
+    }
+
+    createProcedure(firstName, lastName, patientID){
+        const data = {
+                "resourceType": "Procedure",
+                "meta": {
+                    "lastUpdated": this.getCurrentTime,
+                    "profile": [
+                        "https://app.azaleahealth.com/fhir/R4/142443/StructureDefinition/Procedure",
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+                    ]
+                },
+                "status": "unknown",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://www.ama-assn.org/go/cpt",
+                            "code": "66982",
+                            "display": "XCAPSL CTRC RMVL CPLX WO ECP"
+                        }
+                    ],
+                    "text": "XCAPSL CTRC RMVL CPLX WO ECP"
+                },
+                "subject": {
+                    "reference": `Patient/${patientID}`,
+                    "type": "Patient",
+                    "display": `${firstName} ${lastName}`
+                },
+                "performedPeriod": {
+                    "start": this.getCurrentTime
+                }
+        }   
+            this.axios.post('/Procedure', data)
+            .then(response => console.log(response.data))
+            .catch(err => {
+            console.log(err)
+        })
+    }
+
 }
 
 
