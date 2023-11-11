@@ -15,6 +15,11 @@ const createJWT = (id, role) => {
         role
     }, process.env.JWT_SECRET)
 }
+router.get('/practitioner', (req, res) => {
+    const token = req.cookies.token.replace('"', '')
+    const payload = jwt.verify(token, process.env.JWT_SECRET)
+    console.log(payload)
+})
 
 router.post('/patient/register', async (req, res) => {
     const potentialPatient = await Patient.findOne({email: req.body.email})
@@ -76,7 +81,7 @@ router.post('/practitioner/login', async (req, res) => {
             const jwt = createJWT(practitioner._id, 'practitioner')
             
             if (status) {
-                res.cookie('token', JSON.stringify(jwt), {
+                res.cookie('token', JSON.stringify(jwt).replace('"', ''), {
                     httpOnly: true
                 })
     

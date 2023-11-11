@@ -2,6 +2,7 @@ const usersRouter = require('./users')
 const mongoose = require('mongoose')
 const express = require('express')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
 const FHIRClient = require('./client')
@@ -22,6 +23,7 @@ async function main() {
         origin: ['http://localhost:5173']
     }
     app.use(cors(corsOptions))
+    app.use(cookieParser())
     app.use(express.json())
     app.use('/users', usersRouter)
 

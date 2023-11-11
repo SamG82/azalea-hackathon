@@ -86,11 +86,11 @@ class FHIRClient {
         return formattedTime;
     }
 
-    createProcedure(firstName, lastName, patientID){
+    createProcedure(text, firstName, lastName, patientID){
         const data = {
                 "resourceType": "Procedure",
                 "meta": {
-                    "lastUpdated": this.getCurrentTime,
+                    "lastUpdated": this.getCurrentTime(),
                     "profile": [
                         "https://app.azaleahealth.com/fhir/R4/142443/StructureDefinition/Procedure",
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
@@ -102,10 +102,10 @@ class FHIRClient {
                         {
                             "system": "http://www.ama-assn.org/go/cpt",
                             "code": "66982",
-                            "display": "XCAPSL CTRC RMVL CPLX WO ECP"
+                            "display": text
                         }
                     ],
-                    "text": "XCAPSL CTRC RMVL CPLX WO ECP"
+                    "text": text
                 },
                 "subject": {
                     "reference": `Patient/${patientID}`,
@@ -113,7 +113,7 @@ class FHIRClient {
                     "display": `${firstName} ${lastName}`
                 },
                 "performedPeriod": {
-                    "start": this.getCurrentTime
+                    "start": this.getCurrentTime()
                 }
         }   
             this.axios.post('/Procedure', data)
