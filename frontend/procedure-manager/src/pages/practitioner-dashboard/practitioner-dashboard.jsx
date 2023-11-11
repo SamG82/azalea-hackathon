@@ -1,28 +1,29 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Popup from 'reactjs-popup'
 import client from '../../client'
 import './practitioner-dashboard.css'
 
 function CreateProcedureForm() {
+    const cptCode = useRef('')
     return (
+        <>
+        <div className='patient-selection'>
+            
+        </div>
         <div className='account-form-container'>
             <form className='account-form'>
-                <input type='text' ref={firstName} placeholder='First Name'/>
-                <input type='text' ref={lastName} placeholder='Last name'/>
-                <input type='text' ref={npi} placeholder='NPI'/>
-                <input type='text' ref={email} placeholder='Email'/>
-                <input type='password' ref={password} placeholder='Password'/>
-                <button onClick={e => submitUser(e)}className='submit-button'>Submit</button>
+                <input type='text' ref={cptCode} placeholder='cptcode'/>
+                <button className='submit-button'>Submit</button>
             </form>
         </div>
-        
+        </>
     )
 }
 
 function PractitionerDashboard() {
     const [name, setName] = useState('')
     const navigate = useNavigate()
+    const [create, setCreate] = useState(false)
 
     useEffect(() => {
         client.get('/users/practitioner').then(response => {
@@ -40,12 +41,8 @@ function PractitionerDashboard() {
                 <span className='spacer'></span>
             </div>
             <div className='dashboard-main'>
-                <Popup
-                trigger={<button className='create-procedure'>Start Procedure</button>}
-                position="bottom center"
-                >
-                    <CreateProcedureForm/>
-                </Popup>
+                <button onClick={e => setCreate(!create)} className='create-procedure'>Start Procedure</button>
+                {create && <CreateProcedureForm/>}
             </div>
         </div>
     )
