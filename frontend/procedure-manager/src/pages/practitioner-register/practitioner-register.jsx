@@ -11,7 +11,6 @@ function PractitionerLogin() {
     const npi = useRef('')
     
     const [error, setError] = useState('')
-
     const navigate = useNavigate()
     const submitUser = (e) => {
         e.preventDefault()
