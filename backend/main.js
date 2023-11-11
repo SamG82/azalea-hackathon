@@ -48,9 +48,9 @@ async function main() {
             return res.sendStatus(401)
         }
 
-        const patients = await fhir.getAllPatients();
-        res.json(patients);
-    });
+        const patients = await fhir.getAllPatients()
+        res.json(patients)
+    })
     
     app.post('/procedure', async(req, res) => {
         let payload = {}

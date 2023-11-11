@@ -39,6 +39,7 @@ router.post('/patient/login', async(req, res) => {
         .then(status => {
             const new_token = createJWT(patient._id, 'practitioner')
             
+            console.log(status)
             if (status) {
                 res.cookie('token', new_token, {
                     httpOnly: true
